@@ -1,0 +1,3 @@
+- Inverter equação para tráfego;
+- Rever equação de Erlang C
+- Avançar em erlang C
