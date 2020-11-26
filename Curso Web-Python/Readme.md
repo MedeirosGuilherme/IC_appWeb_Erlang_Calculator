@@ -399,6 +399,7 @@ O objetivo com este curso é a finalização do projeto de iniciação científi
 
 
 ![figura8](projeto1.png)
+
 `Figura 8 - Previsão da versão final do projeto de IC`
 
 
