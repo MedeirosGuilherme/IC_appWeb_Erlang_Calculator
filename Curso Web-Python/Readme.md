@@ -78,6 +78,7 @@ A aplicação web pode ser acessada no endereço que vem como resposta do flask 
 A imagem do site em execução pode ser visto na figura 1.
 
 ![figura1](modelo1.png)
+
 `Figura 1: Modelo inicial do website em execução no localhost`
 
 Para encurtar futuras execuções, o comando ao flask pode ser resumido criando um arquivo .flaskenv na raíz do diretório contendo:
@@ -123,6 +124,7 @@ def index():
 O resultado da modificação pode ser visto na figura 2.
 
 ![figura2](modelo2.png)
+
 `Figura 2: Segundo modelo do site, pós modificação e inserção de código HTML`
 
 ****
@@ -193,6 +195,7 @@ Há operações que podem ser feitas utilizando o Jinja2, dentre elas, condicion
 Este código é um pouquinho mais inteligente e considera que se a função em python passar um título, este será adicionado a tab do website. Se não, o título default *Welcome to Microblog* será colocado no lugar, tudo utilizando condicionais no template realizado no index.html. As duas formas podem ser vistas na figura 3.
 
 ![figura3](modelo3.png)
+
 `Figura 3 - Titulo do site modificado através da condicional com e sem título nos parâmetros da chamada do render template, respectivamente.`
 
 Na segunda forma, simplesmente foi suprimido o `title = home` do código em `routes.py`.
@@ -302,6 +305,90 @@ Aqui, o `base.html` toma conta do título e de toda a estrutura do site, e o `in
 Se for necessário criar outra página com a mesma estrutura, neste caso, é possível fazer um outro arquivo html que também extende o `base.html` e serão garantidas à ele todas as características que o `index.html` herda neste exemplo. O resultado pode ser visto na figura 6.
 
 ![figura6](modelo6.png)
+
 `Figura 6 - Site executado com base e implementação com herança de templates`
 
 Pode ser observada a estrutura combinada dos dois códigos, da `base.html` que implementa a esturutra e coloca o link que pode ser visto no topo da página, e também do `index.html` que implementa a saudação e a lista de posts.
+
+****
+
+## Aula 3: Inputs e Web Forms
+
+WebForms estão entre os blocos mais básicos da construção de qualquer aplicação WEB. Eles serão usados para fazer submissões de dados e entrada de informações por parte do usuário.
+
+Para fazer o uso de Web Forms, será utilizada a extensão *Flask-WTF* que faz uso de *WTFForms* que se integram muito bem com o *Flask*. Essa é apenas uma das extensões do Flask (e mais serão utilizadas no futuro do curso), alternativa que ajuda muito na produção de *websites* com a utilização de recursos já prontos.
+
+A instalação do *Flask-WTF* é feita através de: 
+
+> (venv) $ pip install flask-wtf
+
+****
+
+**Configuração**
+
+A aplicação desenvolvida até agora é simples e não necessita de configuração. Aplicações maiores (e algumas extensões do *Flask*) permitem certa liberdade de configuração que você passa como um *framework* como configuração de variáveis.
+
+A solução mais básica de configuração é definir suas variáveis em como chaves em um arquivo `app.config` que utiliza as variáveis como que em um dicionário. É possível fazer algo desta forma:
+
+```python
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'you-will-never-guess'
+#... adicionar mais variáveis aqui se for necessário
+```
+
+Uma maneira mais eloquente pode ser feita, separando os arquivos e criando uma classe em python para guardar as variáveis de configuração. Para isso será criado um novo módulo em python com a classe mencionada, criado no diretório do projeto (microblog, no caso).
+
+*/config.py* :
+```python
+import os
+
+class Config(object):
+    SECRET_KEY = os.enviroment.get('SECRET_KEY') or 'you-will-never-guess'
+```
+
+SECRET_KEY é uma variável de configuração, que é setada aqui nesta classe. Com a necessidade de mais configurações, novas variáveis podem ser adicionadas nesse arquivo. 
+
+SECRET_KEY é uma das poucas variáveis obrigatórias para aplicações *Flask*, já que algumas aplicações usam o valor da SECRET_KEY como criptografia, como forma de evitar ataques em *web forms*.
+
+Agora que existe um arquivo de configuração, é necessário dizer ao *Flask* que ele existe e que deve ser executado, isto é feito no `__init__.py`.
+
+*/app/init.py* :
+```python
+from flask import Flask
+from config import Config
+
+app = Flask(__name__)
+app.config.from_object(Config)
+
+from app import routes
+```
+
+****
+
+**Web Forms**
+
+A extensão *Flask-WTF* usa classes python para criar formulários web. Uma classe form simplesmente define os campos dos formulários como variáveis.
+
+De forma a separar em arquivos diferentes, será criado um arquivo em /microblog/app chamado `forms.py`. Será colocado um formulário de login que pede usuário e senha para quem quer entrar, além disso dois botões: um de relembrar a senha do usuário e outra de confirmar o envio das informações.
+
+*/app/forms.py*
+```python
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, PaswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired
+
+class LoginForm(FLaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
+```
+
+Todos os *Fields* são classes importadas do wtforms, e neles são passadas descrições como parâmetros. Cada construção é feita de uma forma diferente, no caso, String, Password, Boolean e Submit.
+
+O método DataRequired colocado nos validadores verifica se o campo foi cumprido para permitir progredir. Este é apenas um validador de vários, alguns outros serão utilizados durante o curso.
+
+
+
+
