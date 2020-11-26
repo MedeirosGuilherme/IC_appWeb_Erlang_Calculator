@@ -389,6 +389,18 @@ Todos os *Fields* são classes importadas do wtforms, e neles são passadas desc
 
 O método DataRequired colocado nos validadores verifica se o campo foi cumprido para permitir progredir. Este é apenas um validador de vários, alguns outros serão utilizados durante o curso.
 
+O objetivo é criar uma tela de Log In, como pode ser visto na figura 7.
+
+![Figura7](modelo7.png)
+
+`Figura 7 - Tela de Log In e Senha com os campos funcionando.`
+
+O objetivo com este curso é a finalização do projeto de iniciação científica do desenvolvimento de uma ferramenta de aplicação WEB para o dimensionamento de capacidade e tráfego de voz do sistema de rádio digital tetra da PRF-SC. O modelo final previsto (neste ponto) para a aplicação pode ser visto na figura 8 e não é muito diferente do que foi proposto até agora pelo curso do professor Grinberg.
+
+
+![figura8](projeto1.png)
+`Figura 8 - Previsão da versão final do projeto de IC`
+
 
 
 
